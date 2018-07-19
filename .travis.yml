@@ -12,7 +12,6 @@ dist: trusty
 sudo: false
 before_script:
  - ccache -s || echo "CCache is not available."
- - if [[ "${TRAVIS_OS_NAME}_$CC" == "linux_gcc" ]]; then sudo apt-get -y install astyle ; fi
 script:
 - rm -rf artifacts dest
 - mkdir dest artifacts
@@ -21,7 +20,7 @@ script:
 - make -j2 all examples check && make -C tests run_local
 - make install
 - (cd dest && tar cvzf ../artifacts/librdkafka.tar.gz .)
-- if [[ "${TRAVIS_OS_NAME}_$CC" == "linux_gcc" ]]; then make check-style ; fi
+- if [[ "${TRAVIS_OS_NAME}_$CC" == "linux_clang" ]]; then packaging/tools/check-style.sh --install ; fi
 - if [[ "${TRAVIS_OS_NAME}_$CC" == "linux_gcc" ]]; then packaging/rpm/mock-on-docker.sh ; fi
 - if [[ "${TRAVIS_OS_NAME}_$CC" == "linux_gcc" ]]; then docker run -it -v $PWD:/v microsoft/dotnet:2-sdk /v/packaging/tools/build-debian.sh /v /v/artifacts/librdkafka-debian9.tgz; fi
 deploy:

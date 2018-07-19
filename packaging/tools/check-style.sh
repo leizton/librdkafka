@@ -9,6 +9,7 @@
 #
 # Options:
 #   --fix   - Fix style issues (otherwise just report)
+#   --install - Install astyle
 #
 #
 # For each source file in the git repository, style it according
@@ -19,13 +20,35 @@
 set -e
 fix=0
 
-if [[ $1 == "--fix" ]]; then
-    shift
-    fix=1
+toolsdir=$(dirname $(readlink -f $0))
+
+# Prefer our built astyle, else fall back on system's
+astyle="$toolsdir/bin/astyle"
+if [[ ! -x $astyle ]] && which astyle; then
+    astyle="astyle"
 fi
 
+while [[ $1 == --* ]]; do
+    case "$1" in
+        --fix)
+            fix=1
+            ;;
+        --install)
+            if [[ ! -x $astyle ]]; then
+                $toolsdir/build-astyle.sh "$toolsdir"
+            fi
+            $astyle -V
+            ;;
+        *)
+            echo "Usage: $0 [options] [<scan-root>]" 1>&2
+            exit 1
+            ;;
+    esac
+    shift
+done
+
 scanroot=$1
-ignore_spec="$(dirname $0)/ignore_style.txt"
+ignore_spec="$toolsdir/ignore_style.txt"
 
 files=$(git ls-files $scanroot | grep -E '\.(c|h|cpp)$')
 
@@ -45,7 +68,7 @@ for f in $files ; do
     fi
 
     tmpfile="${tmpdir}//${f//\//__}"
-    astyle --style=google --indent=spaces=8 < "$f" > "$tmpfile"
+    $astyle --style=google --indent=spaces=8 < "$f" > "$tmpfile"
     if ! cmp -s "$f" "${tmpfile}" ; then
         errcnt=$(expr $errcnt + 1)
         errfiles="${errfiles} $f"
