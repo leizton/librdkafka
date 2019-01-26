@@ -60,9 +60,9 @@
 #define RD_EXPORT
 #else
 #ifdef LIBRDKAFKACPP_EXPORTS
-#define RD_EXPORT __declspec(dllexport)
+#define __declspec(dllexport)
 #else
-#define RD_EXPORT __declspec(dllimport)
+#define __declspec(dllimport)
 #endif
 #endif
 #else
@@ -486,7 +486,7 @@ class KafkaConsumer;
  * serve queued delivery report callbacks.
 
  */
-class RD_EXPORT DeliveryReportCb {
+class DeliveryReportCb {
  public:
   /**
    * @brief Delivery report callback.
@@ -504,7 +504,7 @@ class RD_EXPORT DeliveryReportCb {
  *
  * @sa RdKafka::Conf::set() \c "partitioner_cb"
  */
-class RD_EXPORT PartitionerCb {
+class PartitionerCb {
  public:
   /**
    * @brief Partitioner callback
@@ -563,7 +563,7 @@ class PartitionerKeyPointerCb {
  *
  * @sa RdKafka::Event
  */
-class RD_EXPORT EventCb {
+class EventCb {
  public:
   /**
    * @brief Event callback
@@ -579,7 +579,7 @@ class RD_EXPORT EventCb {
 /**
  * @brief Event object class as passed to the EventCb callback.
  */
-class RD_EXPORT Event {
+class Event {
  public:
   /** @brief Event type */
   enum Type {
@@ -673,7 +673,7 @@ class RD_EXPORT Event {
 /**
  * @brief Consume callback class
  */
-class RD_EXPORT ConsumeCb {
+class ConsumeCb {
  public:
   /**
    * @brief The consume callback is used with
@@ -691,7 +691,7 @@ class RD_EXPORT ConsumeCb {
 /**
  * @brief \b KafkaConsumer: Rebalance callback class
  */
-class RD_EXPORT RebalanceCb {
+class RebalanceCb {
 public:
   /**
    * @brief Group rebalance callback for use with RdKafka::KafkaConsumer
@@ -753,7 +753,7 @@ public:
 /**
  * @brief Offset Commit callback class
  */
-class RD_EXPORT OffsetCommitCb {
+class OffsetCommitCb {
 public:
   /**
    * @brief Set offset commit callback for use with consumer groups
@@ -782,7 +782,7 @@ public:
  * @brief \b Portability: SocketCb callback class
  *
  */
-class RD_EXPORT SocketCb {
+class SocketCb {
  public:
   /**
    * @brief Socket callback
@@ -807,7 +807,7 @@ class RD_EXPORT SocketCb {
  * @brief \b Portability: OpenCb callback class
  *
  */
-class RD_EXPORT OpenCb {
+class OpenCb {
  public:
   /**
    * @brief Open callback
@@ -846,7 +846,7 @@ class RD_EXPORT OpenCb {
  *
  * @sa CONFIGURATION.md for the full list of supported properties.
  */
-class RD_EXPORT Conf {
+class Conf {
  public:
   /**
    * @brief Configuration object type
@@ -1014,7 +1014,7 @@ class RD_EXPORT Conf {
 /**
  * @brief Base handle, super class for specific clients.
  */
-class RD_EXPORT Handle {
+class Handle {
  public:
   virtual ~Handle() { }
 
@@ -1303,7 +1303,7 @@ class RD_EXPORT Handle {
  * Is typically used with std::vector<RdKafka::TopicPartition*> to provide
  * a list of partitions for different operations.
  */
-class RD_EXPORT TopicPartition {
+class TopicPartition {
 public:
   /**
    * Create topic+partition object for \p topic and \p partition
@@ -1345,7 +1345,7 @@ public:
  * @brief Topic handle
  *
  */
-class RD_EXPORT Topic {
+class Topic {
  public:
   /**
    * @brief Unassigned partition.
@@ -1440,7 +1440,7 @@ class RD_EXPORT Topic {
  *
  */
 
-class RD_EXPORT MessageTimestamp {
+class MessageTimestamp {
 public:
   enum MessageTimestampType {
     MSG_TIMESTAMP_NOT_AVAILABLE,   /**< Timestamp not available */
@@ -1462,7 +1462,7 @@ public:
  * 
  * @remark Requires Apache Kafka >= 0.11.0 brokers
  */
-class RD_EXPORT Headers {
+class Headers {
 public:
   virtual ~Headers() = 0;
 
@@ -1697,7 +1697,7 @@ public:
  * an error event.
  *
  */
-class RD_EXPORT Message {
+class Message {
  public:
   /** @brief Message persistance status can be used by the application to
    *         find out if a produced message was persisted in the topic log. */
@@ -1833,7 +1833,7 @@ class RD_EXPORT Message {
  * RdKafka::Consumer::consume_callback() methods that take a queue as the first
  * parameter for more information.
  */
-class RD_EXPORT Queue {
+class Queue {
  public:
   /**
    * @brief Create Queue object
@@ -1913,7 +1913,7 @@ class RD_EXPORT Queue {
  * Currently supports the \c range and \c roundrobin partition assignment
  * strategies (see \c partition.assignment.strategy)
  */
-class RD_EXPORT KafkaConsumer : public virtual Handle {
+class KafkaConsumer : public virtual Handle {
 public:
   /**
    * @brief Creates a KafkaConsumer.
@@ -2188,7 +2188,7 @@ public:
  *
  * A simple non-balanced, non-group-aware, consumer.
  */
-class RD_EXPORT Consumer : public virtual Handle {
+class Consumer : public virtual Handle {
  public:
   /**
    * @brief Creates a new Kafka consumer handle.
@@ -2365,7 +2365,7 @@ class RD_EXPORT Consumer : public virtual Handle {
 /**
  * @brief Producer
  */
-class RD_EXPORT Producer : public virtual Handle {
+class Producer : public virtual Handle {
  public:
   /**
    * @brief Creates a new Kafka producer handle.
